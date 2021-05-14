@@ -13,7 +13,7 @@ pipeline {
                 sh 'echo Building image...'
 
                 script {
-                    dockerImage = docker.build(dockerImageName + ":$BUILD_NUMBER", "--no-cache=true")
+                    dockerImage = docker.build(dockerImageName + ":$BUILD_NUMBER", "--no-cache", ".")
 
                 }
             }
