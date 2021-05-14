@@ -6,12 +6,12 @@ IMAGE_NAME="bartrcash/webapi"
 # stop container
 echo "Stoping container..."
 
-CONTAINER_ID=$(docker ps -q --filter ancestor=$IMAGE_NAME )
+CONTAINER_ID=$(sudo docker ps -q --filter ancestor=$IMAGE_NAME )
 
 if [ $CONTAINER_ID ]
 then
     set -x
-    docker stop $CONTAINER_ID
+    sudo docker stop $CONTAINER_ID
     set +x
 
     echo "Containter stopped."
@@ -23,12 +23,12 @@ fi
 # delete container
 echo "Deleting container...."
 
-CONTAINER_ID=$(docker ps --all -q --filter ancestor=$IMAGE_NAME )  
+CONTAINER_ID=$(sudo docker ps --all -q --filter ancestor=$IMAGE_NAME )  
 
 if [ $CONTAINER_ID ]
 then
     set -x
-    docker rm $CONTAINER_ID
+    sudo docker rm $CONTAINER_ID
     set +x
     echo "Containter deleted."
 else
@@ -37,12 +37,12 @@ fi
 
 # delete image
 echo "Deleting image...."
-IMAGE_ID=$(docker images  --filter reference=$IMAGE_NAME  --format "{{.ID}}" )
+IMAGE_ID=$(sudo docker images  --filter reference=$IMAGE_NAME  --format "{{.ID}}" )
 
 if [ $IMAGE_ID ]
 then
     set -x
-    docker rmi $IMAGE_ID
+    sudo docker rmi $IMAGE_ID
     set +x
     echo "Image deleted."
 else
@@ -52,13 +52,13 @@ fi
 # get lastest image
 echo "Getting the last version...."
 set -x
-docker pull $IMAGE_NAME
+sudo docker pull $IMAGE_NAME
 set +x
 
 # run image
 echo "Running image...."
 set -x
-docker run -p 5000:80 -d $IMAGE_NAME
+sudo docker run -p 5000:5000 -d $IMAGE_NAME
 set +x
 
 # End
