@@ -1,0 +1,17 @@
+import os
+import datetime
+
+# DEBUG
+PROPAGATE_EXCEPTIONS = True
+DEBUG = True
+
+# sql alchemy
+SQLALCHEMY_ECHO = True
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+SQLALCHEMY_DATABASE_URI = os.environ.get(
+    "SQLALCHEMY_DATABASE_URI")
+
+# JWT
+JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+
+
