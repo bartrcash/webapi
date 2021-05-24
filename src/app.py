@@ -1,8 +1,8 @@
 # flask
 from flask import Flask, jsonify
 
-import flask.scaffold
-flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
+# import flask.scaffold
+# flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
 
 # flask_cors
 from flask_cors import CORS
