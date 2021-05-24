@@ -1,6 +1,9 @@
 # flask
 from flask import Flask, jsonify
 
+import flask.scaffold
+flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
+
 # flask_cors
 from flask_cors import CORS
 
@@ -16,7 +19,7 @@ from dotenv import load_dotenv
 
 
 # Modules
-from modules.auth import auth_module
+from modules.user import user_module
 
 # exceptions
 # from errors.custom_error import CustomException
@@ -29,7 +32,7 @@ load_dotenv(dotenv_path)
 app = Flask(__name__)
 
 # Add modules
-app.register_blueprint(auth_module, url_prefix="/api/users")
+app.register_blueprint(user_module, url_prefix="/api/users")
 
 # CORS
 CORS(app)
@@ -55,11 +58,11 @@ def pingenv():
 
 
 # Config
-jwt = JWTManager(app)
 app.config.from_object("config")
+jwt = JWTManager(app)
+
 
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
-    print("holaaaa")
     app.run(debug=True, host='0.0.0.0')  # important to mention debug=True

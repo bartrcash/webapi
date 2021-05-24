@@ -21,8 +21,8 @@ from resources.confirmation import (
 )
 
 # Create bluepirnt
-auth_module = Blueprint('auth', __name__)
-api = Api(auth_module)
+user_module = Blueprint('auth', __name__)
+api = Api(user_module)
 
 #### Add resources
 

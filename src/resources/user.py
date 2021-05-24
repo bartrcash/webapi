@@ -18,7 +18,7 @@ from passlib.hash import pbkdf2_sha256
 # traceback
 import traceback
 
-# from libs.mailgun import MailGunException
+from libs.mailgun import MailGunException
 from flask_jwt_extended import (create_access_token,
                                 get_jwt_identity,
                                 create_refresh_token,
@@ -53,7 +53,6 @@ class UserSignin(Resource):
             # find user by email
             # if userFound is None:
             userFound = UserModel.find_by_email(user_email)
-            print("heyy")
             # compare passwords
             if userFound and custom_pbkdf2.verify(user_password, userFound.password):
 
@@ -64,8 +63,9 @@ class UserSignin(Resource):
 
                 return {
                     "user": {
-                        "user_id": userFound.id,
+                        "id": userFound.id,
                         "username": userFound.username,
+                        "email": userFound.email,
                         "access_token": access_token,
                         "refresh_token": refresh_token}
                 }, 200
@@ -171,19 +171,16 @@ class User(Resource):
         # return {'message':  gettext('User deleted')}, 200
 
 # change username
-
-
 class UserName(Resource):
-
     @classmethod
-    @jwt_required
+    @jwt_required()
     def put(cls):
 
         # get user id
         user_id = get_jwt_identity()
 
         # new username
-        newusername = request.get_json()["userName"]
+        newusername = request.get_json()["username"]
 
         # check if username already exists
         if UserModel.find_by_username(newusername):
@@ -194,7 +191,7 @@ class UserName(Resource):
             user.username = newusername
             user.save_to_db()
 
-        return {"message":  'Username updated'}, 200
+        return {"message":  'Username updated', "username": newusername}, 200
 
 # change user email
 
@@ -202,14 +199,14 @@ class UserName(Resource):
 class UserEmail(Resource):
 
     @classmethod
-    @jwt_required
+    @jwt_required()
     def put(cls):
 
         # get user id
         user_id = get_jwt_identity()
 
         # get new email
-        newemail = request.get_json()["userEmail"]
+        newemail = request.get_json()["email"]
 
         try:
             if UserModel.find_by_email(newemail):
@@ -221,11 +218,11 @@ class UserEmail(Resource):
                 user.save_to_db()
 
                 # send confirmation
-                confirmation = ConfirmationModel(user.id)
-                confirmation.save_to_db()
+                # confirmation = ConfirmationModel(user.id)
+                # confirmation.save_to_db()
                 # user.send_confirmation_email()
 
-                return {"message":  'Email updated'}, 200
+                return {"message":  'Email updated', "email": newemail}, 200
 
         except:
             return {"message":  'Error'}, 500
@@ -236,7 +233,7 @@ class UserEmail(Resource):
 class UserPassword(Resource):
 
     @classmethod
-    @jwt_required
+    @jwt_required()
     def put(cls):
 
         # get user id
